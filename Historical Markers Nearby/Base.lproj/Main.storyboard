@@ -18,12 +18,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mA6-OX-1ks">
-                                <frame key="frameInset" minX="65" minY="574" width="244" height="62"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Historical Markers Nearby" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AsO-PW-Lng">
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bite-Size Bits of Local, National, and Global History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FeN-Xl-wvL">
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mA6-OX-1ks">
+                                <color key="backgroundColor" red="0.043137254901960784" green="0.38823529411764707" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="qkd-OA-gUp"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <state key="normal" title="Nearby Markers">
+                                <state key="normal" title="Go">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -32,6 +43,14 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="FeN-Xl-wvL" firstAttribute="top" secondItem="AsO-PW-Lng" secondAttribute="bottom" id="0xQ-pr-jM7"/>
+                            <constraint firstItem="AsO-PW-Lng" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-50" id="7YZ-um-mNU"/>
+                            <constraint firstItem="mA6-OX-1ks" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="A21-rh-bCh"/>
+                            <constraint firstItem="FeN-Xl-wvL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Gmv-Ac-dUP"/>
+                            <constraint firstItem="AsO-PW-Lng" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cD8-RZ-N7Z"/>
+                            <constraint firstItem="mA6-OX-1ks" firstAttribute="top" secondItem="FeN-Xl-wvL" secondAttribute="bottom" constant="20" id="zAZ-4p-xNd"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="nearbyButton" destination="mA6-OX-1ks" id="xz0-h6-4vg"/>

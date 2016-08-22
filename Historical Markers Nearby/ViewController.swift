@@ -12,7 +12,7 @@ import UIKit
 class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var nearbyButton: UIButton!
     @IBAction func nearbyButtonClick(_ sender: AnyObject) {
-        UIApplication.shared.openURL(nearbyURL)
+        UIApplication.shared.open(nearbyURL, options: [:], completionHandler: nil)
     }
     
     var nearbyURL: URL!
@@ -71,7 +71,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
             let openAction = UIAlertAction(title: "Open Settings", style: .default) { (action) in
                 let url = URL(string:UIApplicationOpenSettingsURLString)
-                UIApplication.shared.openURL(url!)
+                UIApplication.shared.open(url!, options: [:], completionHandler: nil)
             }
             alertController.addAction(openAction)
             
