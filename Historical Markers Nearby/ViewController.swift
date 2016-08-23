@@ -11,89 +11,91 @@ import UIKit
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var nearbyButton: UIButton!
-    @IBAction func nearbyButtonClick(_ sender: AnyObject) {
-        UIApplication.shared.open(nearbyURL, options: [:], completionHandler: nil)
+    @IBAction func nearbyButtonClick(sender: AnyObject) {
+        UIApplication.sharedApplication().openURL(nearbyURL)
     }
     
-    var nearbyURL: URL!
+    var nearbyURL: NSURL!
     var locationManager: CLLocationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         locationManager = CLLocationManager()
         locationManager.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        nearbyButton.isHidden = true
+        nearbyButton.hidden = true
     }
     
-    func viewDidAppear() {
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
         checkLocationAuthorization()
     }
     
-    func locationManager(_ locationManager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(locationManager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
-            showLocationButton(latitude: String(latitude), longitude: String(longitude))
+            showLocationButton(String(latitude), longitude: String(longitude))
         } else {
-            showLocationError(error: "There was a problem finding your location. Please try again later.")
+            showLocationError("There was a problem finding your location. Please try again later.")
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        showLocationError(error: error.localizedDescription)
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        showLocationError(error.localizedDescription)
     }
     
-    func locationManager(_ manager: CLLocationManager,
+    func locationManager(manager: CLLocationManager,
                          didChangeAuthorization status: CLAuthorizationStatus) {
         checkLocationAuthorization()
     }
     
     func checkLocationAuthorization() {
         switch CLLocationManager.authorizationStatus() {
-        case .authorizedWhenInUse, .authorizedAlways:
+        case .AuthorizedWhenInUse, .AuthorizedAlways:
             locationManager.requestLocation()
-        case .notDetermined:
+        case .NotDetermined:
             locationManager.requestWhenInUseAuthorization()
-        case .restricted, .denied:
+        case .Restricted, .Denied:
             let alertController = UIAlertController(
                 title: "Location Access Disabled",
                 message: "In order to use this app, please open this app's settings and update the location access.",
-                preferredStyle: .alert)
+                preferredStyle: .Alert)
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
             alertController.addAction(cancelAction)
             
-            let openAction = UIAlertAction(title: "Open Settings", style: .default) { (action) in
-                let url = URL(string:UIApplicationOpenSettingsURLString)
-                UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+            let openAction = UIAlertAction(title: "Open Settings", style: .Default) { (action) in
+                let url = NSURL(string:UIApplicationOpenSettingsURLString)
+                UIApplication.sharedApplication().openURL(url!)
             }
             alertController.addAction(openAction)
             
-            self.present(alertController, animated: true, completion: nil)
+            self.presentViewController(alertController, animated: true, completion: nil);
         }
         
     }
     
     func showLocationButton(latitude: String, longitude: String) {
-        nearbyURL = URL(string: "https://www.hmdb.org/map.asp?nearby=yes&Latitude=\(latitude)&Longitude=\(longitude)")
-        nearbyButton.isHidden = false
+        nearbyURL = NSURL(string: "https://www.hmdb.org/map.asp?nearby=yes&Latitude=\(latitude)&Longitude=\(longitude)")
+        nearbyButton.hidden = false
     }
     
     func showLocationError(error: String) {
         let alertController = UIAlertController(
             title: "Could Not Find Location",
             message: error,
-            preferredStyle: .alert)
+            preferredStyle: .Alert)
         
-        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "Ok", style: .Default, handler: nil)
         alertController.addAction(okAction)
         
-        self.present(alertController, animated: true, completion: nil)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }
