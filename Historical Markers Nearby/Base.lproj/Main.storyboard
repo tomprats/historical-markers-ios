@@ -18,13 +18,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Historical Markers Nearby" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AsO-PW-Lng">
-                                <rect key="frame" x="150.5" y="234" width="299.5" height="32.5"/>
+                                <rect key="frame" x="150" y="234" width="299.5" height="32.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <color key="textColor" red="0.99999600648880005" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bite-Size Bits of Local, National, and Global History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FeN-Xl-wvL">
-                                <rect key="frame" x="166" y="266.5" width="268.5" height="13.5"/>
+                                <rect key="frame" x="166" y="266" width="268.5" height="13.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.99999600648880005" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -43,18 +43,35 @@
                                     <action selector="nearbyButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qZe-6b-v4Z"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="vO6-Wx-fpu">
+                                <rect key="frame" x="282" y="307" width="37" height="37"/>
+                                <color key="color" red="0.043137254899999998" green="0.38823529410000002" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imM-cB-gFF">
+                                <rect key="frame" x="0.5" y="315" width="600" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.043137254899999998" green="0.38823529410000002" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="FeN-Xl-wvL" firstAttribute="top" secondItem="AsO-PW-Lng" secondAttribute="bottom" id="0xQ-pr-jM7"/>
+                            <constraint firstItem="imM-cB-gFF" firstAttribute="centerX" secondItem="mA6-OX-1ks" secondAttribute="centerX" id="64g-cx-31U"/>
                             <constraint firstItem="AsO-PW-Lng" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-50" id="7YZ-um-mNU"/>
                             <constraint firstItem="mA6-OX-1ks" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="A21-rh-bCh"/>
+                            <constraint firstItem="vO6-Wx-fpu" firstAttribute="centerX" secondItem="mA6-OX-1ks" secondAttribute="centerX" id="G7t-Qn-SBR"/>
                             <constraint firstItem="FeN-Xl-wvL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Gmv-Ac-dUP"/>
+                            <constraint firstItem="imM-cB-gFF" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="RkZ-sa-U88"/>
+                            <constraint firstItem="vO6-Wx-fpu" firstAttribute="centerY" secondItem="mA6-OX-1ks" secondAttribute="centerY" id="WZq-Y8-Hx2"/>
                             <constraint firstItem="AsO-PW-Lng" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cD8-RZ-N7Z"/>
+                            <constraint firstItem="imM-cB-gFF" firstAttribute="centerY" secondItem="mA6-OX-1ks" secondAttribute="centerY" id="z0K-H4-q9z"/>
                             <constraint firstItem="mA6-OX-1ks" firstAttribute="top" secondItem="FeN-Xl-wvL" secondAttribute="bottom" constant="20" id="zAZ-4p-xNd"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="errorMessage" destination="imM-cB-gFF" id="hSJ-PF-gHr"/>
+                        <outlet property="loadingIndicator" destination="vO6-Wx-fpu" id="eK9-h7-Obj"/>
                         <outlet property="nearbyButton" destination="mA6-OX-1ks" id="xz0-h6-4vg"/>
                     </connections>
                 </viewController>

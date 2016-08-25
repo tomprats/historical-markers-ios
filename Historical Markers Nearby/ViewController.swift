@@ -10,7 +10,9 @@ import CoreLocation
 import UIKit
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var nearbyButton: UIButton!
+    @IBOutlet weak var errorMessage: UILabel!
     @IBAction func nearbyButtonClick(sender: AnyObject) {
         UIApplication.sharedApplication().openURL(nearbyURL)
     }
@@ -23,17 +25,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         locationManager = CLLocationManager()
         locationManager.delegate = self
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(willEnterForeground), name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        nearbyButton.hidden = true
+    func didBecomeActive() {
+        setState("loading")
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    func willEnterForeground() {
         checkLocationAuthorization()
     }
     
@@ -41,7 +43,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if let location = locations.first {
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
-            showLocationButton(String(latitude), longitude: String(longitude))
+            nearbyURL = NSURL(string: "https://www.hmdb.org/map.asp?nearby=yes&Latitude=\(latitude)&Longitude=\(longitude)")
+            
+            self.setState("ready")
         } else {
             showLocationError("There was a problem finding your location. Please try again later.")
         }
@@ -63,12 +67,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         case .NotDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .Restricted, .Denied:
+            self.setState("Location Access Disabled")
+            
             let alertController = UIAlertController(
                 title: "Location Access Disabled",
                 message: "In order to use this app, please open this app's settings and update the location access.",
                 preferredStyle: .Alert)
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler:  nil)
             alertController.addAction(cancelAction)
             
             let openAction = UIAlertAction(title: "Open Settings", style: .Default) { (action) in
@@ -77,17 +83,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
             alertController.addAction(openAction)
             
-            self.presentViewController(alertController, animated: true, completion: nil);
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
         
     }
     
-    func showLocationButton(latitude: String, longitude: String) {
-        nearbyURL = NSURL(string: "https://www.hmdb.org/map.asp?nearby=yes&Latitude=\(latitude)&Longitude=\(longitude)")
-        nearbyButton.hidden = false
-    }
-    
     func showLocationError(error: String) {
+        self.setState(error)
+        
         let alertController = UIAlertController(
             title: "Could Not Find Location",
             message: error,
@@ -97,5 +100,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         alertController.addAction(okAction)
         
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func setState(state: String) {
+        switch state {
+        case "loading":
+            loadingIndicator.startAnimating()
+            nearbyButton.hidden = true
+            errorMessage.hidden = true
+        case "ready":
+            loadingIndicator.stopAnimating()
+            nearbyButton.hidden = false
+            errorMessage.hidden = true
+        default:
+            loadingIndicator.stopAnimating()
+            nearbyButton.hidden = true
+            errorMessage.hidden = false
+            errorMessage.text = "Location Error: \(state)"
+        }
     }
 }
