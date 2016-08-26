@@ -28,14 +28,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(willEnterForeground), name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
     func didBecomeActive() {
         setState("loading")
-    }
-    
-    func willEnterForeground() {
         checkLocationAuthorization()
     }
     
@@ -45,14 +41,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let longitude = location.coordinate.longitude
             nearbyURL = NSURL(string: "https://www.hmdb.org/map.asp?nearby=yes&Latitude=\(latitude)&Longitude=\(longitude)")
             
-            self.setState("ready")
+            setState("ready")
         } else {
-            showLocationError("There was a problem finding your location. Please try again later.")
+            setState("There was a problem finding your location. Please try again later.")
         }
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        showLocationError(error.localizedDescription)
+        setState(error.localizedDescription)
     }
     
     func locationManager(manager: CLLocationManager,
@@ -67,14 +63,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         case .NotDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .Restricted, .Denied:
-            self.setState("Location Access Disabled")
-            
             let alertController = UIAlertController(
                 title: "Location Access Disabled",
                 message: "In order to use this app, please open this app's settings and update the location access.",
                 preferredStyle: .Alert)
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler:  nil)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                self.setState("Location Access Disabled")
+            }
             alertController.addAction(cancelAction)
             
             let openAction = UIAlertAction(title: "Open Settings", style: .Default) { (action) in
@@ -86,20 +82,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.presentViewController(alertController, animated: true, completion: nil)
         }
         
-    }
-    
-    func showLocationError(error: String) {
-        self.setState(error)
-        
-        let alertController = UIAlertController(
-            title: "Could Not Find Location",
-            message: error,
-            preferredStyle: .Alert)
-        
-        let okAction = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-        alertController.addAction(okAction)
-        
-        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     func setState(state: String) {
