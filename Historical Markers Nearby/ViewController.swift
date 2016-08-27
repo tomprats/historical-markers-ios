@@ -39,7 +39,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if let location = locations.first {
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
-            nearbyURL = NSURL(string: "https://www.hmdb.org/map.asp?nearby=yes&Latitude=\(latitude)&Longitude=\(longitude)")
+            let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
+            nearbyURL = NSURL(string: "https://www.hmdb.org/map.asp?nearby=yes&latitude=\(latitude)&longitude=\(longitude)&nearest=10&source=app-ios-\(version)")
             
             setState("ready")
         } else {
